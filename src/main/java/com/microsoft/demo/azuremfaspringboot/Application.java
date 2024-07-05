@@ -27,8 +27,8 @@ public class Application {
 	}
 
 	@Bean
-	public FilterRegistrationBean adalFilter() {
-		FilterRegistrationBean registration = new FilterRegistrationBean();
+	public FilterRegistrationBean<AdalFilter> adalFilter() {
+		FilterRegistrationBean<AdalFilter> registration = new FilterRegistrationBean<>();
 		AdalFilter adalFilter = new AdalFilter();
 		beanFactory.autowireBean(adalFilter);
 		registration.setFilter(adalFilter);
@@ -39,5 +39,6 @@ public class Application {
 		registration.setOrder(1);
 		return registration;
 	}
+
 
 }

@@ -19,7 +19,7 @@
  ******************************************************************************/
 package com.microsoft.demo.azuremfaspringboot.auth;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.nimbusds.openid.connect.sdk.AuthenticationResponse;

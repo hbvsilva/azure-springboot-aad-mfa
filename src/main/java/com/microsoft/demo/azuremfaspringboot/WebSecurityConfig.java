@@ -1,25 +1,20 @@
 package com.microsoft.demo.azuremfaspringboot;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-		// TODO: findout how to enable CSRF
-		http.authorizeRequests().antMatchers("/").permitAll()
-				// .and().csrf()
-				// .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-				.and().csrf().disable();
-		// .anyRequest().authenticated()
-		// .filterSecurityInterceptorOncePerRequest(true)
-		// .and().addFilterAt(new AdalFilter(),BasicAuthenticationFilter.class);
+		http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll() ).csrf(csrf -> csrf.disable());
+
+		return http.build();
 	}
-
 }

@@ -15,14 +15,14 @@ import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 import javax.naming.ServiceUnavailableException;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -49,9 +49,6 @@ public class AdalFilter implements Filter {
 
 	@Value("${clientSecret}")
 	private String clientSecret;
-
-	@Value("${tenant}")
-	private String tenant;
 
 	@Value("${authority}")
 	private String authority;
@@ -141,7 +138,7 @@ public class AdalFilter implements Filter {
 		ExecutorService service = null;
 		try {
 			service = Executors.newFixedThreadPool(1);
-			context = new AuthenticationContext(authority + tenant + "/", true, service);
+			context = new AuthenticationContext(authority + "/", true, service);
 			Future<AuthenticationResult> future = context.acquireToken("https://graph.windows.net",
 					new ClientCredential(clientId, clientSecret), null);
 			result = future.get();
@@ -164,7 +161,7 @@ public class AdalFilter implements Filter {
 		ExecutorService service = null;
 		try {
 			service = Executors.newFixedThreadPool(1);
-			context = new AuthenticationContext(authority + tenant + "/", true, service);
+			context = new AuthenticationContext(authority + "/", true, service);
 			Future<AuthenticationResult> future = context.acquireTokenByRefreshToken(refreshToken,
 					new ClientCredential(clientId, clientSecret), null, null);
 			result = future.get();
@@ -190,7 +187,7 @@ public class AdalFilter implements Filter {
 		ExecutorService service = null;
 		try {
 			service = Executors.newFixedThreadPool(1);
-			context = new AuthenticationContext(authority + tenant + "/", true, service);
+			context = new AuthenticationContext(authority +  "/", true, service);
 			Future<AuthenticationResult> future = context.acquireTokenByAuthorizationCode(authCode, new URI(currentUri),
 					credential, null);
 			result = future.get();
@@ -211,7 +208,7 @@ public class AdalFilter implements Filter {
 	}
 
 	private String getRedirectUrl(String currentUri) throws UnsupportedEncodingException {
-		String redirectUrl = authority + this.tenant
+		String redirectUrl = authority 
 				+ "/oauth2/authorize?response_type=code%20id_token&scope=openid&response_mode=form_post&redirect_uri="
 				+ URLEncoder.encode(currentUri, "UTF-8") + "&client_id=" + clientId
 				+ "&resource=https%3a%2f%2fgraph.windows.net" + "&nonce=" + UUID.randomUUID() + "&site_id=500879";
@@ -223,7 +220,6 @@ public class AdalFilter implements Filter {
 		// Values already configured with properties
 		logger.info("clientId = " + this.clientId);
 		logger.info("authority = " + this.authority);
-		logger.info("tenant = " + this.tenant);
 		logger.info("clientSecret = " + this.clientSecret);
 	}
 

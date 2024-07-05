@@ -2,10 +2,10 @@ package com.microsoft.demo.azuremfaspringboot.controllers;
 
 import java.util.logging.Logger;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.boot.autoconfigure.web.ErrorController;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -37,8 +37,6 @@ public class WebErrorController implements ErrorController {
 		return mav;
 	}
 
-	
-	@Override
 	public String getErrorPath() {
 		logger.info("routing to error page");
 		return "error";
